@@ -1,0 +1,155 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: team@openapitools.org
+  description: OneOf test
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: OneOf test
+  version: 0.1.0
+servers:
+- url: http://localhost:3000/
+paths:
+  /v1/endpoint:
+    post:
+      parameters:
+      - explode: false
+        in: header
+        name: Stage
+        required: true
+        schema:
+          enum:
+          - prod
+          - int
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/x-www-form-urlencoded; charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/_v1_endpoint_post_request'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_v1_endpoint_post_200_response'
+          description: Successful operation
+      x-content-type: application/x-www-form-urlencoded; charset=utf-8
+      x-accepts: application/json
+components:
+  parameters:
+    stage:
+      explode: false
+      in: header
+      name: Stage
+      required: true
+      schema:
+        enum:
+        - prod
+        - int
+        type: string
+      style: simple
+  schemas:
+    RequestModelA:
+      properties:
+        id:
+          type: string
+        type:
+          enum:
+          - value1
+          - value2
+          - value3
+          type: string
+        scope:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+      required:
+      - description
+      - id
+      - name
+      - scope
+      - type
+      type: object
+    RequestModelB:
+      properties:
+        type:
+          enum:
+          - value1
+          - value2
+          - value3
+          type: string
+        summary:
+          type: string
+      required:
+      - summary
+      - type
+      type: object
+    RequestModelC:
+      properties:
+        id:
+          type: string
+        type:
+          enum:
+          - value1
+          - value2
+          - value3
+          type: string
+        key:
+          type: string
+      required:
+      - id
+      - key
+      - type
+      type: object
+    ResponseModelA:
+      example:
+        expires: 0
+        value_type: value_type
+        value_2: value_2
+        value_1: value_1
+      properties:
+        expires:
+          format: int32
+          type: integer
+        value_1:
+          type: string
+        value_2:
+          type: string
+        value_type:
+          type: string
+      required:
+      - expires
+      - value_1
+      - value_2
+      type: object
+    ResponseModelB:
+      properties:
+        expires:
+          format: int32
+          type: integer
+        value_1:
+          type: string
+        value_2:
+          type: string
+        value_type:
+          type: string
+      required:
+      - expires
+      - value_1
+      type: object
+    _v1_endpoint_post_request:
+      oneOf:
+      - $ref: '#/components/schemas/RequestModelA'
+      - $ref: '#/components/schemas/RequestModelB'
+      - $ref: '#/components/schemas/RequestModelC'
+    _v1_endpoint_post_200_response:
+      oneOf:
+      - $ref: '#/components/schemas/ResponseModelA'
+      - $ref: '#/components/schemas/ResponseModelB'
+
